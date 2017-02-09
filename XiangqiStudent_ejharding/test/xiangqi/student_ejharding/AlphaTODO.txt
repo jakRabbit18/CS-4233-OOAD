@@ -1,0 +1,6 @@
+[DONE] Make Game -> valid game
+[DONE] Red first move -> valid
+[DONE] black second move -> red wins
+red moves to invalid -> illegal
+red moves from invalid -> illegal
+[DONE] getPieceAt -> None, None
