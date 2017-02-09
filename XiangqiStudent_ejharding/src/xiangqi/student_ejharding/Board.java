@@ -37,7 +37,7 @@ public class Board {
 		 */
 		XiangqiPiece removePiece(){
 			XiangqiPiece temp = this.piece;
-			this.piece = new CXiangqiPiece(XiangqiPieceType.NONE, XiangqiColor.NONE);
+			this.piece = new XiangqiPieceImpl(XiangqiPieceType.NONE, XiangqiColor.NONE);
 			return temp;
 		}
 		
@@ -48,7 +48,7 @@ public class Board {
 		//initialize the board array to none-pieces
 		for(int rank = 0; rank < numRanks; rank++){
 			for(int file = 0; file < numFiles; file++){
-				board[rank][file] = new Intersection(new CXiangqiPiece(XiangqiPieceType.NONE, XiangqiColor.NONE));
+				board[rank][file] = new Intersection(new XiangqiPieceImpl(XiangqiPieceType.NONE, XiangqiColor.NONE));
 			}
 		}
 	}
@@ -69,12 +69,23 @@ public class Board {
 		int rank = location.getRank()-1;
 		int file = location.getFile()-1;
 		
-		if(rank >= board.length || file >= board[0].length || rank < 0 ||file < 0){
-			return new CXiangqiPiece(XiangqiPieceType.NONE, XiangqiColor.NONE);
+		if(!isValidLocation(location)){
+			return new XiangqiPieceImpl(XiangqiPieceType.NONE, XiangqiColor.NONE);
 		}
+		
 		return board[rank][file].getPiece();
 	}
 	
+	public XiangqiPiece removePieceFrom(XiangqiCoordinate location){
+		int rank = location.getRank()-1;
+		int file = location.getFile()-1;
+		
+		if(!isValidLocation(location)){
+			return new XiangqiPieceImpl(XiangqiPieceType.NONE, XiangqiColor.NONE);
+		}
+		
+		return board[rank][file].removePiece();
+	}
 	/**
 	 * places the given piece on the board in the specified location
 	 * @param piece :: the piece to be placed
@@ -88,6 +99,9 @@ public class Board {
 		 * will not duplicate pieces on the board more times than they are supposed to be
 		 */
 		int rank, file;
+		if(!isValidLocation(location)){
+			return false;
+		}
 		if(piece.getColor() == XiangqiColor.RED){
 			rank = location.getRank() -1;
 			file = location.getFile() -1;
@@ -95,6 +109,12 @@ public class Board {
 			rank = board.length - location.getRank();
 			file = board[0].length - location.getFile();
 		} return board[rank][file].place(piece);
+	}
+	
+	public boolean isValidLocation(XiangqiCoordinate loc){
+		int rank = loc.getRank() -1;
+		int file = loc.getFile() -1;
+		return rank < board.length && file < board[0].length && rank >= 0 && file >= 0;
 	}
 	
 	public int getNumRanks(){

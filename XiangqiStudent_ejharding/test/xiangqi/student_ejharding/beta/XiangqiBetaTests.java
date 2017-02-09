@@ -43,10 +43,11 @@ public class XiangqiBetaTests {
 		XiangqiPiece redAdvisor = game.getPieceAt(TestCoordinate.make(1, 2), XiangqiColor.RED);
 		XiangqiPiece redSoldier = game.getPieceAt(TestCoordinate.make(2, 3), XiangqiColor.RED);
 		XiangqiPiece redGeneral = game.getPieceAt(TestCoordinate.make(1, 3), XiangqiColor.RED);
+		XiangqiPiece nonePiece = game.getPieceAt(TestCoordinate.make(3, 3), XiangqiColor.RED);
 		
 		
 		//check all types and colors
-		assertEquals(XiangqiPieceType.CHARIOT, blackChariot.getPieceType());
+		assertEquals(XiangqiPieceType.CHARIOT, blackChariot.getPieceType()); 
 		assertEquals(XiangqiPieceType.ADVISOR, blackAdvisor.getPieceType());
 		assertEquals(XiangqiPieceType.SOLDIER, blackSoldier.getPieceType());
 		assertEquals(XiangqiPieceType.GENERAL, blackGeneral.getPieceType());
@@ -66,6 +67,9 @@ public class XiangqiBetaTests {
 		assertEquals(XiangqiColor.RED, redSoldier.getColor());
 		assertEquals(XiangqiColor.RED, redGeneral.getColor());
 		
+		assertEquals(XiangqiPieceType.NONE, nonePiece.getPieceType());
+		assertEquals(XiangqiColor.NONE, nonePiece.getColor());
+				
 	}
 	
 	@Test
@@ -76,25 +80,43 @@ public class XiangqiBetaTests {
 		assertEquals(XiangqiPieceType.NONE, nonePiece.getPieceType());
 	}
 	
-//	@Test
-//	public void testValidChariotMovesReturnsOK(){
-//		
-//	}
-//	
-//	@Test
-//	public void testInvalidChariotMovesReturnsIllegal(){
-//		
-//	}
-//	
-//	@Test
-//	public void testValidAdvisorMovesReturnsOK(){
-//		
-//	}
-//	
-//	@Test
-//	public void testInvalidAdvisorMovesReturnsIllegal(){
-//		
-//	}
+	@Test
+	public void moveFromEmptyLocationIllegal(){
+		assertEquals(MoveResult.ILLEGAL, game.makeMove(TestCoordinate.make(3, 3), TestCoordinate.make(1, 1)));
+	}
+	
+	@Test
+	public void testValidChariotMovesOK(){
+		assertEquals(MoveResult.OK, game.makeMove(TestCoordinate.make(1, 1), TestCoordinate.make(3, 1)));
+		assertEquals(XiangqiPieceType.NONE, game.getPieceAt(TestCoordinate.make(1,1), XiangqiColor.RED).getPieceType());
+		assertEquals(XiangqiPieceType.CHARIOT, game.getPieceAt(TestCoordinate.make(3, 1), XiangqiColor.RED).getPieceType());
+		assertEquals(MoveResult.OK, game.makeMove(TestCoordinate.make(3, 1), TestCoordinate.make(3, 3)));
+		assertEquals(XiangqiPieceType.NONE, game.getPieceAt(TestCoordinate.make(3, 1), XiangqiColor.RED).getPieceType());
+		assertEquals(XiangqiPieceType.CHARIOT, game.getPieceAt(TestCoordinate.make(3, 3), XiangqiColor.RED).getPieceType());
+	}
+	
+	@Test
+	public void testInvalidChariotMovesIllegal(){
+		game.makeMove(TestCoordinate.make(1, 1), TestCoordinate.make(3, 1));
+		game.makeMove(TestCoordinate.make(3, 1), TestCoordinate.make(3, 3));
+		assertEquals(MoveResult.ILLEGAL, game.makeMove(TestCoordinate.make(3, 3), TestCoordinate.make(3, 3)));
+		assertEquals(XiangqiPieceType.CHARIOT, game.getPieceAt(TestCoordinate.make(3, 3), XiangqiColor.RED).getPieceType());
+		assertEquals(MoveResult.ILLEGAL, game.makeMove(TestCoordinate.make(3, 3), TestCoordinate.make(2, 3)));
+		assertEquals(XiangqiPieceType.CHARIOT, game.getPieceAt(TestCoordinate.make(3, 3), XiangqiColor.RED).getPieceType());
+		assertEquals(MoveResult.ILLEGAL, game.makeMove(TestCoordinate.make(3, 3), TestCoordinate.make(2, 2)));
+		assertEquals(XiangqiPieceType.CHARIOT, game.getPieceAt(TestCoordinate.make(3, 3), XiangqiColor.RED).getPieceType());
+	}
+	
+	@Test
+	public void testValidAdvisorMovesOK(){
+		assertEquals(MoveResult.OK, game.makeMove(TestCoordinate.make(1, 2), TestCoordinate.make(2, 1)));
+		assertEquals(XiangqiPieceType.NONE, game.getPieceAt(TestCoordinate.make(1,2), XiangqiColor.RED).getPieceType());
+		assertEquals(XiangqiPieceType.ADVISOR, game.getPieceAt(TestCoordinate.make(2,1), XiangqiColor.RED).getPieceType());
+		assertEquals(MoveResult.OK, game.makeMove(TestCoordinate.make(2, 1), TestCoordinate.make(3, 2)));
+		assertEquals(XiangqiPieceType.NONE, game.getPieceAt(TestCoordinate.make(2, 1), XiangqiColor.RED).getPieceType());
+		assertEquals(XiangqiPieceType.ADVISOR, game.getPieceAt(TestCoordinate.make(3, 2), XiangqiColor.RED).getPieceType());
+	}
+
 //	
 //	@Test
 //	public void testValidGeneralMovesReturnsOK(){

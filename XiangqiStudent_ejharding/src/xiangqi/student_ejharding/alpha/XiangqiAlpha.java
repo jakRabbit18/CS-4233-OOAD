@@ -8,7 +8,7 @@ import xiangqi.common.XiangqiPiece;
 import xiangqi.common.XiangqiPieceType;
 import xiangqi.student_ejharding.Board;
 import xiangqi.student_ejharding.CXiangqiCoord;
-import xiangqi.student_ejharding.CXiangqiPiece;
+import xiangqi.student_ejharding.XiangqiPieceImpl;
 
 /**
  * This class implements the Alpha version of Xiangqi
@@ -24,8 +24,8 @@ public class XiangqiAlpha implements XiangqiGame {
 	
 	public XiangqiAlpha(){
 		board = new Board(3,3);
-		board.placePieceAt(new CXiangqiPiece(XiangqiPieceType.GENERAL, XiangqiColor.RED), new CXiangqiCoord(1,1));
-		board.placePieceAt(new CXiangqiPiece(XiangqiPieceType.GENERAL, XiangqiColor.BLACK), new CXiangqiCoord(1,1));
+		board.placePieceAt(new XiangqiPieceImpl(XiangqiPieceType.GENERAL, XiangqiColor.RED), new CXiangqiCoord(1,1));
+		board.placePieceAt(new XiangqiPieceImpl(XiangqiPieceType.GENERAL, XiangqiColor.BLACK), new CXiangqiCoord(1,1));
 	}
 	
 	@Override
@@ -61,7 +61,7 @@ public class XiangqiAlpha implements XiangqiGame {
 	@Override
 	public XiangqiPiece getPieceAt(XiangqiCoordinate where, XiangqiColor aspect) {
 		// TODO Auto-generated method stub
-		return new CXiangqiPiece(XiangqiPieceType.NONE, XiangqiColor.NONE);
+		return new XiangqiPieceImpl(XiangqiPieceType.NONE, XiangqiColor.NONE);
 	}
 
 }

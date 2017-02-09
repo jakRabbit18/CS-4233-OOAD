@@ -9,7 +9,8 @@ import xiangqi.common.XiangqiPiece;
 import xiangqi.common.XiangqiPieceType;
 import xiangqi.student_ejharding.Board;
 import xiangqi.student_ejharding.CXiangqiCoord;
-import xiangqi.student_ejharding.CXiangqiPiece;
+import xiangqi.student_ejharding.XiangqiPieceImpl;
+import xiangqi.student_ejharding.moves.Move;
 
 public class XiangqiBeta implements XiangqiGame {
 
@@ -26,8 +27,16 @@ public class XiangqiBeta implements XiangqiGame {
 
 	@Override
 	public MoveResult makeMove(XiangqiCoordinate source, XiangqiCoordinate destination) {
-		// TODO Auto-generated method stub
-		return null;
+		if(!board.isValidLocation(source) || !board.isValidLocation(destination)){
+			return MoveResult.ILLEGAL;
+		}
+		
+		Move move = new Move(source, destination, board);
+		if(move.isValid()){
+			return move.doMove();
+		} else {
+			return MoveResult.ILLEGAL;
+		}
 	}
 
 	@Override
@@ -46,19 +55,19 @@ public class XiangqiBeta implements XiangqiGame {
 	
 	
 	private void placeAllPieces(){
-		XiangqiPiece redGeneral = new CXiangqiPiece(XiangqiPieceType.GENERAL, XiangqiColor.RED);
-		XiangqiPiece redSoldier = new CXiangqiPiece(XiangqiPieceType.SOLDIER, XiangqiColor.RED);
-		XiangqiPiece redAdvisorA = new CXiangqiPiece(XiangqiPieceType.ADVISOR, XiangqiColor.RED);
-		XiangqiPiece redAdvisorB = new CXiangqiPiece(XiangqiPieceType.ADVISOR, XiangqiColor.RED);
-		XiangqiPiece redChariotA = new CXiangqiPiece(XiangqiPieceType.CHARIOT, XiangqiColor.RED);
-		XiangqiPiece redChariotB = new CXiangqiPiece(XiangqiPieceType.CHARIOT, XiangqiColor.RED);
+		XiangqiPiece redGeneral = new XiangqiPieceImpl(XiangqiPieceType.GENERAL, XiangqiColor.RED);
+		XiangqiPiece redSoldier = new XiangqiPieceImpl(XiangqiPieceType.SOLDIER, XiangqiColor.RED);
+		XiangqiPiece redAdvisorA = new XiangqiPieceImpl(XiangqiPieceType.ADVISOR, XiangqiColor.RED);
+		XiangqiPiece redAdvisorB = new XiangqiPieceImpl(XiangqiPieceType.ADVISOR, XiangqiColor.RED);
+		XiangqiPiece redChariotA = new XiangqiPieceImpl(XiangqiPieceType.CHARIOT, XiangqiColor.RED);
+		XiangqiPiece redChariotB = new XiangqiPieceImpl(XiangqiPieceType.CHARIOT, XiangqiColor.RED);
 		
-		XiangqiPiece blackGeneral = new CXiangqiPiece(XiangqiPieceType.GENERAL, XiangqiColor.BLACK);
-		XiangqiPiece blackSoldier = new CXiangqiPiece(XiangqiPieceType.SOLDIER, XiangqiColor.BLACK);
-		XiangqiPiece blackAdvisorA = new CXiangqiPiece(XiangqiPieceType.ADVISOR, XiangqiColor.BLACK);
-		XiangqiPiece blackAdvisorB = new CXiangqiPiece(XiangqiPieceType.ADVISOR, XiangqiColor.BLACK);
-		XiangqiPiece blackChariotA = new CXiangqiPiece(XiangqiPieceType.CHARIOT, XiangqiColor.BLACK);
-		XiangqiPiece blackChariotB = new CXiangqiPiece(XiangqiPieceType.CHARIOT, XiangqiColor.BLACK);
+		XiangqiPiece blackGeneral = new XiangqiPieceImpl(XiangqiPieceType.GENERAL, XiangqiColor.BLACK);
+		XiangqiPiece blackSoldier = new XiangqiPieceImpl(XiangqiPieceType.SOLDIER, XiangqiColor.BLACK);
+		XiangqiPiece blackAdvisorA = new XiangqiPieceImpl(XiangqiPieceType.ADVISOR, XiangqiColor.BLACK);
+		XiangqiPiece blackAdvisorB = new XiangqiPieceImpl(XiangqiPieceType.ADVISOR, XiangqiColor.BLACK);
+		XiangqiPiece blackChariotA = new XiangqiPieceImpl(XiangqiPieceType.CHARIOT, XiangqiColor.BLACK);
+		XiangqiPiece blackChariotB = new XiangqiPieceImpl(XiangqiPieceType.CHARIOT, XiangqiColor.BLACK);
 		
 		board.placePieceAt(redChariotA, new CXiangqiCoord(1,1));
 		board.placePieceAt(redAdvisorA, new CXiangqiCoord(1,2));

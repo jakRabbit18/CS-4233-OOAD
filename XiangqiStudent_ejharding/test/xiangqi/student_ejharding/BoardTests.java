@@ -38,7 +38,7 @@ public class BoardTests {
 	
 	@Test
 	public void testPlacePiecePutsPieceInCorrectLocation(){
-		XiangqiPiece redGeneral = new CXiangqiPiece(XiangqiPieceType.GENERAL, XiangqiColor.RED);
+		XiangqiPiece redGeneral = new XiangqiPieceImpl(XiangqiPieceType.GENERAL, XiangqiColor.RED);
 		assertTrue(board.placePieceAt(redGeneral, TestCoordinate.make(1, 1)));
 		assertEquals(redGeneral, board.board[0][0].piece); //getPieceAt(TestCoordinate.make(1, 1)));
 	}

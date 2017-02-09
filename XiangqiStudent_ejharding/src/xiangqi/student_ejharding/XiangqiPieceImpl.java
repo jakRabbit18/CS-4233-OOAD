@@ -4,13 +4,13 @@ import xiangqi.common.XiangqiColor;
 import xiangqi.common.XiangqiPiece;
 import xiangqi.common.XiangqiPieceType;
 
-public class CXiangqiPiece implements XiangqiPiece {
+public class XiangqiPieceImpl implements XiangqiPiece {
 
 	
 	private XiangqiPieceType type;
 	private XiangqiColor color;
 
-	public CXiangqiPiece(XiangqiPieceType type, XiangqiColor color){
+	public XiangqiPieceImpl(XiangqiPieceType type, XiangqiColor color){
 		this.type = type;
 		this.color = color;
 	}
@@ -26,10 +26,10 @@ public class CXiangqiPiece implements XiangqiPiece {
 	}
 	
 	public boolean equals(Object other){
-		if(!(other instanceof CXiangqiPiece)){
+		if(!(other instanceof XiangqiPieceImpl)){
 			return false;
 		}
-		CXiangqiPiece toCheck = (CXiangqiPiece) other;
+		XiangqiPieceImpl toCheck = (XiangqiPieceImpl) other;
 		
 		if(toCheck.getColor().equals(this.color) && toCheck.getPieceType().equals(this.type)){
 			return true;
