@@ -48,6 +48,9 @@ public class Move {
 		return piece.isValid(source, destination);
 	}
 	
+	public String getMessage(){
+		return this.message;
+	}
 
 	public boolean undo(){
 		board.placePieceAt(destPiece, destination);
@@ -58,10 +61,12 @@ public class Move {
 	public MoveResult doMove(){
 		if(board.placePieceAt(piece, destination)){
 			board.removePieceFrom(source);
+			this.message = "After Move:\n" + board.toString();
 			return MoveResult.OK;
 		}
 		board.placePieceAt(destPiece, destination);
 		board.placePieceAt(piece, source);
+		this.message = "YOU CAN'T DO THAT!!!!";
 		return MoveResult.ILLEGAL; 
 	}
 }

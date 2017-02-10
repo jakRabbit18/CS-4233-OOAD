@@ -78,6 +78,12 @@ public class Board {
 		return board[rank][file].getPiece();
 	}
 
+	/**
+	 * removes the piece from the given location if it can, and returns it
+	 * if the given location is invalid, a None-Type piece is returned
+	 * @param location : the location from which to return the piece
+	 * @return the piece formerly stored at the given location
+	 */
 	public XiangqiPiece removePieceFrom(XiangqiCoordinate location){
 		int rank = location.getRank()-1;
 		int file = location.getFile()-1;
@@ -88,6 +94,7 @@ public class Board {
 
 		return board[rank][file].removePiece();
 	}
+	
 	/**
 	 * places the given piece on the board in the specified location
 	 * @param piece :: the piece to be placed
@@ -113,6 +120,11 @@ public class Board {
 		} return board[rank][file].place(piece);
 	}
 
+	/**
+	 * determines if the given (rank, file) location is a valid coordinate in the current board
+	 * @param loc : the location to check
+	 * @return true if the location exists in the board, false otherwise
+	 */
 	public boolean isValidLocation(XiangqiCoordinate loc){
 		int rank = loc.getRank() -1;
 		int file = loc.getFile() -1;
@@ -126,23 +138,27 @@ public class Board {
 	public int getNumFiles(){
 		return board[0].length;
 	}
-
-	public boolean generalInCheckMate(XiangqiColor player) {
-		MyCoordinate generalLoc = findGeneral(player);
-		
-		return false;
-	}
-
-	public boolean generalInCheck(XiangqiColor player) {
-		MyCoordinate generalLoc = findGeneral(player);
-		ArrayList<MyCoordinate> pieceLocs = new ArrayList<MyCoordinate>();
+	
+	public String toString(){
+		String s = "";
 		for(int r = 0; r < getNumRanks(); r++){
 			for(int f = 0; f < getNumFiles(); f++){
-				if(board[r][f].getPiece().getColor() != XiangqiColor.NONE && board[r][f].getPiece().getColor() != player){
-					pieceLocs.add(new MyCoordinate(r+1,f+1,this));
-				}
+				s += getPieceChar(board[r][f].getPiece()) + " ";
 			}
+			s+="\n";
 		}
+		return s;
+	}
+
+
+	/**
+	 * a method to determine if the given color's general is in check
+	 * @param player : the color of the general with which we concern ourselves
+	 * @return true if the general is in check, false otherwise
+	 */
+	public boolean generalInCheck(XiangqiColor player) {
+		MyCoordinate generalLoc = findGeneral(player);
+		ArrayList<MyCoordinate> pieceLocs = getAttackingPieces(player);
 		
 		for(MyCoordinate loc: pieceLocs){
 			Move test = new Move(loc, generalLoc, this, player);
@@ -151,6 +167,18 @@ public class Board {
 			}
 		}
 		return false;
+	}
+	
+	private ArrayList<MyCoordinate> getAttackingPieces(XiangqiColor player){
+		ArrayList<MyCoordinate> pieceLocs = new ArrayList<MyCoordinate>();
+		for(int r = 0; r < getNumRanks(); r++){
+			for(int f = 0; f < getNumFiles(); f++){
+				if(board[r][f].getPiece().getColor() != XiangqiColor.NONE && board[r][f].getPiece().getColor() != player){
+					pieceLocs.add(new MyCoordinate(r+1,f+1,this));
+				}
+			}
+		}
+		return pieceLocs;
 	}
 
 	private MyCoordinate findGeneral(XiangqiColor player){
@@ -164,16 +192,6 @@ public class Board {
 		return null;
 	}
 	
-	public String toString(){
-		String s = "";
-		for(int r = 0; r < getNumRanks(); r++){
-			for(int f = 0; f < getNumFiles(); f++){
-				s += getPieceChar(board[r][f].getPiece()) + " ";
-			}
-			s+="\n";
-		}
-		return s;
-	}
 	
 	private String getPieceChar(XiangqiPiece p){
 		String chars = "";

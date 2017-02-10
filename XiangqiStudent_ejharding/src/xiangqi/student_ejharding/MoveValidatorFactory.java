@@ -22,6 +22,7 @@ public class MoveValidatorFactory {
 			(IMyCoordinate c1, IMyCoordinate c2) -> c1.clearStraightPathTo(c2);
 	private static BiPredicate<IMyCoordinate, IMyCoordinate> diagonalDistanceValidator1 = 
 			((IMyCoordinate c1, IMyCoordinate c2) -> c1.diagonalDistanceTo(c2) == 1);
+//commented out for future use with elephants
 //	private static BiPredicate<IMyCoordinate, IMyCoordinate> diagonalDistanceValidator2 = 
 //			(IMyCoordinate c1, IMyCoordinate c2) -> c1.diagonalDistanceTo(c2) == 2;
 	private static BiPredicate<IMyCoordinate, IMyCoordinate> orthogonalDistanceValidator = 
@@ -33,6 +34,11 @@ public class MoveValidatorFactory {
 	private static BiPredicate<IMyCoordinate, IMyCoordinate> staysInPalaceValidator =
 			(IMyCoordinate c1, IMyCoordinate c2) -> c2.isInPalace();
 			
+	/**
+	 * given a piece type, will determine which validators must be used to determine how that piece can move.
+	 * @param pieceType : the type of piece to be moved
+	 * @return list of lambda expressions that dictate the movement of the piece.
+	 */
 	public static List<BiPredicate<IMyCoordinate, IMyCoordinate>> getValidators(XiangqiPieceType pieceType){
 		
 		List<BiPredicate<IMyCoordinate, IMyCoordinate>> validators = new LinkedList<BiPredicate<IMyCoordinate, IMyCoordinate>>();

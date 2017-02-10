@@ -229,8 +229,26 @@ public class XiangqiBetaTests {
 		assertEquals(MoveResult.OK, game.makeMove(TestCoordinate.make(1,2), TestCoordinate.make(2,3)));
 		
 	}
-	//	@Test
-	//	public void testCheckmateConditions(){
-	//		
-	//	}
+	
+	@Test
+	public void testDrawByMoveLimit(){
+		for(int i = 0; i < 5; i++){
+			//move red advisor
+			assertEquals(MoveResult.OK,game.makeMove(TestCoordinate.make(1, 2), TestCoordinate.make(2, 1)));
+			//move black advisor
+			assertEquals(MoveResult.OK,game.makeMove(TestCoordinate.make(1, 2), TestCoordinate.make(2, 1)));
+			//move red advisor
+			assertEquals(MoveResult.OK,game.makeMove(TestCoordinate.make(2, 1), TestCoordinate.make(1, 2)));
+			//move black advisor
+			assertEquals(MoveResult.OK,game.makeMove(TestCoordinate.make(2, 1), TestCoordinate.make(1, 2)));
+		}
+		
+		//move red advisor
+		assertEquals(MoveResult.DRAW,game.makeMove(TestCoordinate.make(1, 2), TestCoordinate.make(2, 1)));
+		
+	}
+	@Test
+	public void testCheckmateConditions(){
+	
+	}
 }
