@@ -8,32 +8,47 @@ import xiangqi.common.XiangqiGameVersion;
 import xiangqi.common.XiangqiPiece;
 import xiangqi.common.XiangqiPieceType;
 import xiangqi.student_ejharding.Board;
-import xiangqi.student_ejharding.CXiangqiCoord;
+import xiangqi.student_ejharding.Move;
+import xiangqi.student_ejharding.MyCoordinate;
 import xiangqi.student_ejharding.XiangqiPieceImpl;
-import xiangqi.student_ejharding.moves.Move;
 
 public class XiangqiBeta implements XiangqiGame {
 
 	final XiangqiGameVersion version;
 	final int numRanks, numFiles;
 	Board board;
+	XiangqiColor currentPlayer;
 
 	public XiangqiBeta(){
 		version = XiangqiGameVersion.BETA_XQ;
 		numRanks = numFiles = 5;		
 		board = new Board(numRanks, numFiles);
+		currentPlayer = XiangqiColor.RED;
 		placeAllPieces();
 	}
 
 	@Override
 	public MoveResult makeMove(XiangqiCoordinate source, XiangqiCoordinate destination) {
-		if(!board.isValidLocation(source) || !board.isValidLocation(destination)){
-			return MoveResult.ILLEGAL;
-		}
+		boolean checkToStart = board.generalInCheck(currentPlayer);
 		
-		Move move = new Move(source, destination, board);
+		if(currentPlayer == XiangqiColor.BLACK){
+			source = MyCoordinate.convertToRedAspect(MyCoordinate.copyCoordinate(source, board), numRanks, numFiles);
+			destination = MyCoordinate.convertToRedAspect(MyCoordinate.copyCoordinate(destination, board), numRanks, numFiles);
+		}
+		System.out.println("Before Move:");
+		System.out.println(board.toString());
+		Move move = new Move(source, destination, board, currentPlayer);
 		if(move.isValid()){
-			return move.doMove();
+			MoveResult result = move.doMove();
+			System.out.println("After Move:");
+			System.out.println(board.toString());
+			if(checkToStart && board.generalInCheck(currentPlayer)){
+				move.undo();
+				return MoveResult.ILLEGAL;
+			} else {
+				switchPlayers();
+				return result;
+			}
 		} else {
 			return MoveResult.ILLEGAL;
 		}
@@ -48,12 +63,16 @@ public class XiangqiBeta implements XiangqiGame {
 	@Override
 	public XiangqiPiece getPieceAt(XiangqiCoordinate where, XiangqiColor aspect) {
 		if(aspect == XiangqiColor.BLACK){
-			where = CXiangqiCoord.convertToRed(where, numRanks, numFiles);
+			where = MyCoordinate.convertToRedAspect(MyCoordinate.copyCoordinate(where, board), numRanks, numFiles);
 		}
 		return board.getPieceAt(where);
 	}
 	
-	
+	private void switchPlayers(){
+		if(currentPlayer.equals(XiangqiColor.RED)){
+			currentPlayer = XiangqiColor.BLACK;
+		} else currentPlayer = XiangqiColor.RED;
+	}
 	private void placeAllPieces(){
 		XiangqiPiece redGeneral = new XiangqiPieceImpl(XiangqiPieceType.GENERAL, XiangqiColor.RED);
 		XiangqiPiece redSoldier = new XiangqiPieceImpl(XiangqiPieceType.SOLDIER, XiangqiColor.RED);
@@ -69,18 +88,18 @@ public class XiangqiBeta implements XiangqiGame {
 		XiangqiPiece blackChariotA = new XiangqiPieceImpl(XiangqiPieceType.CHARIOT, XiangqiColor.BLACK);
 		XiangqiPiece blackChariotB = new XiangqiPieceImpl(XiangqiPieceType.CHARIOT, XiangqiColor.BLACK);
 		
-		board.placePieceAt(redChariotA, new CXiangqiCoord(1,1));
-		board.placePieceAt(redAdvisorA, new CXiangqiCoord(1,2));
-		board.placePieceAt(redSoldier, new CXiangqiCoord(2,3));
-		board.placePieceAt(redGeneral, new CXiangqiCoord(1,3));
-		board.placePieceAt(redAdvisorB, new CXiangqiCoord(1,4));
-		board.placePieceAt(redChariotB, new CXiangqiCoord(1,5));
+		board.placePieceAt(redChariotA, new MyCoordinate(1,1,board));
+		board.placePieceAt(redAdvisorA, new MyCoordinate(1,2,board));
+		board.placePieceAt(redSoldier, new MyCoordinate(2,3,board));
+		board.placePieceAt(redGeneral, new MyCoordinate(1,3,board));
+		board.placePieceAt(redAdvisorB, new MyCoordinate(1,4,board));
+		board.placePieceAt(redChariotB, new MyCoordinate(1,5,board));
 		
-		board.placePieceAt(blackChariotA, new CXiangqiCoord(1,1));
-		board.placePieceAt(blackAdvisorA, new CXiangqiCoord(1,2));
-		board.placePieceAt(blackSoldier, new CXiangqiCoord(2,3));
-		board.placePieceAt(blackGeneral, new CXiangqiCoord(1,3));
-		board.placePieceAt(blackAdvisorB, new CXiangqiCoord(1,4));
-		board.placePieceAt(blackChariotB, new CXiangqiCoord(1,5));
+		board.placePieceAt(blackChariotA, new MyCoordinate(5,1,board));
+		board.placePieceAt(blackAdvisorA, new MyCoordinate(5,2,board));
+		board.placePieceAt(blackSoldier, new MyCoordinate(4,3,board));
+		board.placePieceAt(blackGeneral, new MyCoordinate(5,3,board));
+		board.placePieceAt(blackAdvisorB, new MyCoordinate(5,4,board));
+		board.placePieceAt(blackChariotB, new MyCoordinate(5,5,board));
 	}
 }
