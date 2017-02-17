@@ -16,6 +16,7 @@ import xiangqi.common.XiangqiPieceType;
 public class Board {
 
 	Intersection board[][];
+	private int numRanks, numFiles;
 
 	static class Intersection{
 		XiangqiPiece piece;
@@ -46,6 +47,8 @@ public class Board {
 	} 
 
 	public Board(int numRanks, int numFiles){
+		this.numRanks = numRanks;
+		this.numFiles = numFiles;
 		board = new Intersection[numRanks][numFiles];
 		//initialize the board array to none-pieces
 		for(int rank = 0; rank < numRanks; rank++){
@@ -128,15 +131,15 @@ public class Board {
 	public boolean isValidLocation(XiangqiCoordinate loc){
 		int rank = loc.getRank() -1;
 		int file = loc.getFile() -1;
-		return rank < board.length && file < board[0].length && rank >= 0 && file >= 0;
+		return rank < numRanks && file < numFiles && rank >= 0 && file >= 0;
 	}
 
 	public int getNumRanks(){
-		return board.length;
+		return numRanks;
 	}
 
 	public int getNumFiles(){
-		return board[0].length;
+		return numFiles;
 	}
 	
 	public String toString(){

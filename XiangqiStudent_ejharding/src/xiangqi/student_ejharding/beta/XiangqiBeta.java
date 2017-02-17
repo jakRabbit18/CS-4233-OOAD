@@ -12,17 +12,13 @@ import xiangqi.common.XiangqiPieceType;
 import xiangqi.student_ejharding.Board;
 import xiangqi.student_ejharding.Move;
 import xiangqi.student_ejharding.MyCoordinate;
+import xiangqi.student_ejharding.XiangqiGameImpl;
 import xiangqi.student_ejharding.XiangqiPieceImpl;
 
-public class XiangqiBeta implements XiangqiGame {
+public class XiangqiBeta extends XiangqiGameImpl {
 
 	final XiangqiGameVersion version;
 	final int numRanks, numFiles;
-	final int maxMoves = 10;
-	Board board;
-	XiangqiColor currentPlayer;
-	int moveCount;	
-	Stack<Move> moveStack;
 
 	public XiangqiBeta(){
 		version = XiangqiGameVersion.BETA_XQ;
@@ -30,6 +26,7 @@ public class XiangqiBeta implements XiangqiGame {
 		board = new Board(numRanks, numFiles);
 		currentPlayer = XiangqiColor.RED;
 		moveCount = 0;
+		maxMoves = 10;
 		moveStack = new Stack<Move>();
 		placeAllPieces();
 	}
@@ -45,10 +42,12 @@ public class XiangqiBeta implements XiangqiGame {
 		System.out.println("Before Move "+Integer.toString(moveCount)+" :");
 		System.out.println(board.toString());
 		Move move = new Move(source, destination, board, currentPlayer);
+		
 		if(move.isValid()){
 			MoveResult result = move.doMove();
-			System.out.println("After Move "+Integer.toString(moveCount)+" :");
+			System.out.println("After Move " + Integer.toString(moveCount) +" :");
 			System.out.println(board.toString());
+			
 			if(checkToStart && board.generalInCheck(currentPlayer)){
 				move.undo();
 				return MoveResult.ILLEGAL;
