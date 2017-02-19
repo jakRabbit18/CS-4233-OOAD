@@ -22,10 +22,10 @@ public class MyCoordinate implements IMyCoordinate {
 	}
 
 
-	public static XiangqiCoordinate convertToRedAspect(MyCoordinate black, int ranks, int files){
+	public static MyCoordinate convertToRedAspect(MyCoordinate black, Board board){
 		int bRank = black.getRank();
 		int bFile = black.getFile();
-		return new MyCoordinate(ranks - bRank + 1, files - bFile +1, black.board);
+		return new MyCoordinate(board.getNumRanks() - bRank + 1, board.getNumFiles() - bFile +1, black.board);
 	}
 
 	public Board getBoard() {
@@ -110,10 +110,12 @@ public class MyCoordinate implements IMyCoordinate {
 
 	@Override
 	public boolean isInPalace() {
-		if(this.file > 4 || this.file < 2 || this.rank > 1){
-			return false;
+		if(this.file <= Math.ceil(board.getNumFiles()/2) + 1 && 
+				this.file >= Math.ceil(board.getNumFiles()/2) - 1 && 
+				(this.rank <= Math.ceil(board.getNumRanks()/2) - 2 ||this.rank >= board.getNumRanks() - 2)){
+			return true;
 		}
-		return true;
+		return false;
 	}
 
 	@Override

@@ -36,8 +36,8 @@ public class XiangqiBeta extends XiangqiGameImpl {
 		boolean checkToStart = board.generalInCheck(currentPlayer);
 
 		if(currentPlayer == XiangqiColor.BLACK){
-			source = MyCoordinate.convertToRedAspect(MyCoordinate.copyCoordinate(source, board), numRanks, numFiles);
-			destination = MyCoordinate.convertToRedAspect(MyCoordinate.copyCoordinate(destination, board), numRanks, numFiles);
+			source = MyCoordinate.convertToRedAspect(MyCoordinate.copyCoordinate(source, board),board);
+			destination = MyCoordinate.convertToRedAspect(MyCoordinate.copyCoordinate(destination, board), board);
 		}
 		System.out.println("Before Move "+Integer.toString(moveCount)+" :");
 		System.out.println(board.toString());
@@ -50,39 +50,43 @@ public class XiangqiBeta extends XiangqiGameImpl {
 			
 			if(checkToStart && board.generalInCheck(currentPlayer)){
 				move.undo();
+				moveMessage = "That's Illegal.";
 				return MoveResult.ILLEGAL;
 			} else {
 				moveCount ++;
 				if(moveCount > 2* maxMoves){
+					moveMessage = move.getMessage();
 					result = MoveResult.DRAW;
 				}
+				moveMessage = move.getMessage();
 				moveStack.push(move);
 				switchPlayers();
 				return result;
 			}
 		} else {
+			moveMessage = move.getMessage();
 			return MoveResult.ILLEGAL;
 		}
 	}
 
-	@Override
-	public String getMoveMessage() {
-		return moveStack.peek().getMessage();
-	}
+//	@Override
+//	public String getMoveMessage() {
+//		return moveStack.peek().getMessage();
+//	}
 
 	@Override
 	public XiangqiPiece getPieceAt(XiangqiCoordinate where, XiangqiColor aspect) {
 		if(aspect == XiangqiColor.BLACK){
-			where = MyCoordinate.convertToRedAspect(MyCoordinate.copyCoordinate(where, board), numRanks, numFiles);
+			where = MyCoordinate.convertToRedAspect(MyCoordinate.copyCoordinate(where, board), board);
 		}
 		return board.getPieceAt(where);
 	}
 
-	private void switchPlayers(){
-		if(currentPlayer.equals(XiangqiColor.RED)){
-			currentPlayer = XiangqiColor.BLACK;
-		} else currentPlayer = XiangqiColor.RED;
-	}
+//	private void switchPlayers(){
+//		if(currentPlayer.equals(XiangqiColor.RED)){
+//			currentPlayer = XiangqiColor.BLACK;
+//		} else currentPlayer = XiangqiColor.RED;
+//	}
 	
 	private void placeAllPieces(){
 		XiangqiPiece redGeneral = new XiangqiPieceImpl(XiangqiPieceType.GENERAL, XiangqiColor.RED);

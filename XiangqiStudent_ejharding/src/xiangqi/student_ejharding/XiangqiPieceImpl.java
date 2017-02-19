@@ -3,10 +3,14 @@ package xiangqi.student_ejharding;
 import java.util.List;
 import java.util.function.BiPredicate;
 
+import static xiangqi.common.XiangqiColor.*;
+
 import xiangqi.common.XiangqiColor;
 import xiangqi.common.XiangqiCoordinate;
 import xiangqi.common.XiangqiPiece;
 import xiangqi.common.XiangqiPieceType;
+
+import static xiangqi.common.XiangqiPieceType.*;
 
 public class XiangqiPieceImpl implements XiangqiPiece {
 
@@ -57,5 +61,5 @@ public class XiangqiPieceImpl implements XiangqiPiece {
 //			return false;
 //		}
 //	}
-
+	
 }

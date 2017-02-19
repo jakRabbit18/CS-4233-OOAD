@@ -23,8 +23,8 @@ public class MoveValidatorFactory {
 	private static BiPredicate<IMyCoordinate, IMyCoordinate> diagonalDistanceValidator1 = 
 			((IMyCoordinate c1, IMyCoordinate c2) -> c1.diagonalDistanceTo(c2) == 1);
 //commented out for future use with elephants
-//	private static BiPredicate<IMyCoordinate, IMyCoordinate> diagonalDistanceValidator2 = 
-//			(IMyCoordinate c1, IMyCoordinate c2) -> c1.diagonalDistanceTo(c2) == 2;
+	private static BiPredicate<IMyCoordinate, IMyCoordinate> diagonalDistanceValidator2 = 
+			(IMyCoordinate c1, IMyCoordinate c2) -> c1.diagonalDistanceTo(c2) == 2;
 	private static BiPredicate<IMyCoordinate, IMyCoordinate> orthogonalDistanceValidator = 
 			(IMyCoordinate c1, IMyCoordinate c2) -> c1.orthogonalDistnanceTo(c2) == 1;
 	private static BiPredicate<IMyCoordinate, IMyCoordinate> inCheckValidator = 
@@ -53,7 +53,7 @@ public class MoveValidatorFactory {
 			validators.add(clearStraightPathValidator);
 			break;
 		case GENERAL:
-			validators.add(horizontalValidator);
+			validators.add(orthogonalValidator);
 			validators.add(orthogonalDistanceValidator);
 			validators.add(inCheckValidator);
 			validators.add(staysInPalaceValidator);
@@ -62,6 +62,11 @@ public class MoveValidatorFactory {
 			validators.add(verticalValidator);
 			validators.add(orthogonalDistanceValidator);
 			validators.add(soldierForwardValidator);
+			break;
+		case ELEPHANT:
+			validators.add(diagonalValidator);
+			validators.add(diagonalDistanceValidator2);
+			validators.add(clearStraightPathValidator);
 			break;
 		case NONE: break;
 		default: 

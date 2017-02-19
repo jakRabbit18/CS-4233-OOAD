@@ -60,17 +60,12 @@ public class Board {
 
 	/**
 	 * method for returning the piece at the specified location
+	 * if an invalid location is given, throws CompletionException
+	 * if no piece is at the location returns noneType piece
 	 * @param location:: the coordinates from which to remove the piece
 	 * @return the piece found at the given location
 	 */
 	public XiangqiPiece getPieceAt(XiangqiCoordinate location){
-		/**
-		 * checks:
-		 * TODO valid location
-		 * TODO valid piece
-		 * 
-		 */
-
 		int rank = location.getRank()-1;
 		int file = location.getFile()-1;
 
@@ -142,6 +137,7 @@ public class Board {
 		return numFiles;
 	}
 	
+	@Override
 	public String toString(){
 		String s = "";
 		for(int r = 0; r < getNumRanks(); r++){
@@ -161,10 +157,16 @@ public class Board {
 	 */
 	public boolean generalInCheck(XiangqiColor player) {
 		MyCoordinate generalLoc = findGeneral(player);
+		XiangqiColor attackingPlayer;
+		if(player.equals(XiangqiColor.BLACK)){
+			attackingPlayer = XiangqiColor.RED;
+		} else {
+			attackingPlayer = XiangqiColor.BLACK;
+		}
 		ArrayList<MyCoordinate> pieceLocs = getAttackingPieces(player);
 		
 		for(MyCoordinate loc: pieceLocs){
-			Move test = new Move(loc, generalLoc, this, player);
+			Move test = new Move(loc, generalLoc, this, attackingPlayer);
 			if(test.isValid()){
 				return true;
 			}
@@ -201,15 +203,17 @@ public class Board {
 		switch(p.getColor()){
 		case BLACK: chars += "b"; break;
 		case RED: chars += "r"; break;
-		case NONE: chars += "-"; break;
+		case NONE: chars += "."; break;
 		default: break;
 		}
-		switch(p.getPieceType()){
-		case CHARIOT: chars += "C"; break;
-		case ADVISOR: chars += "A"; break;
-		case GENERAL: chars += "G"; break;
-		case SOLDIER: chars += "S"; break;
-		case NONE: chars += "-"; break;
+		XiangqiPieceType type = p.getPieceType();
+		switch(type){
+		case CHARIOT: chars += type.getSymbol(); break;
+		case ADVISOR: chars += type.getSymbol(); break;
+		case GENERAL: chars += type.getSymbol(); break;
+		case SOLDIER: chars += type.getSymbol(); break;
+		case ELEPHANT: chars += type.getSymbol(); break;
+		case NONE: chars += type.getSymbol(); break;
 		default: break;
 		}
 		return chars;

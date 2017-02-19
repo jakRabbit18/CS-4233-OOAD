@@ -41,10 +41,16 @@ public class Move {
 			return false;
 		}			
 		
+		if(piece.getColor() != player){
+			this.message = "You cannot move your opponent's pieces!";
+			return false;
+		}
+		
 		if(piece.getColor().equals(destPiece.getColor())){
 			this.message = "You can't capture your own piece!";
 			return false;
 		}
+		
 		return piece.isValid(source, destination);
 	}
 	

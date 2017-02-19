@@ -15,6 +15,7 @@ package xiangqi;
 import xiangqi.common.*;
 import xiangqi.student_ejharding.alpha.XiangqiAlpha;
 import xiangqi.student_ejharding.beta.XiangqiBeta;
+import xiangqi.student_ejharding.gamma.XiangqiGamma;
 /**
  * A simple factory object that creates the appropriate instance of a XiangqiGame.
  * @version Dec 26, 2016
@@ -31,6 +32,7 @@ public class XiangqiGameFactory
 		switch(version){
 		case ALPHA_XQ: return new XiangqiAlpha();
 		case BETA_XQ: return new XiangqiBeta();
+		case GAMMA_XQ: return new XiangqiGamma();
 		default : return new XiangqiAlpha();
 		}
 		
