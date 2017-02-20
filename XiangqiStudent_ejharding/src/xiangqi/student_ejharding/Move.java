@@ -4,6 +4,7 @@ import xiangqi.common.MoveResult;
 import xiangqi.common.XiangqiColor;
 import xiangqi.common.XiangqiCoordinate;
 import xiangqi.common.XiangqiPiece;
+import xiangqi.common.XiangqiPieceType;
 /**
  * class to handle making moved in the game
  * @author Rett
@@ -49,6 +50,21 @@ public class Move {
 		if(piece.getColor().equals(destPiece.getColor())){
 			this.message = "You can't capture your own piece!";
 			return false;
+		}
+		
+		if(source.getRank() <= 5 && destination.getRank() >= 6 ||
+				source.getRank() >= 6 && destination.getRank() <=5){
+			if(piece.getPieceType().equals(XiangqiPieceType.ELEPHANT)){
+				this.message = "Elephant's can't cross the river!";
+				return false;
+			}
+		}
+		
+		if(source.isAcrossRiver(player)){
+			if(piece.getPieceType() == XiangqiPieceType.SOLDIER){
+				piece.moveValidators.remove(MoveValidatorFactory.verticalValidator);
+				piece.moveValidators.add(MoveValidatorFactory.orthogonalValidator);
+			}
 		}
 		
 		return piece.isValid(source, destination);

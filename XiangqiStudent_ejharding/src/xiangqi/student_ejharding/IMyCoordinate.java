@@ -1,5 +1,6 @@
 package xiangqi.student_ejharding;
 
+import xiangqi.common.XiangqiColor;
 import xiangqi.common.XiangqiCoordinate;
 
 public interface IMyCoordinate extends XiangqiCoordinate {
@@ -38,7 +39,7 @@ public interface IMyCoordinate extends XiangqiCoordinate {
 	 * @param other : the coordinate the piece will move toward
 	 * @return true if the other coordinate is closer to the opponent's side of the board than this one
 	 */
-	public boolean isForwardto(IMyCoordinate other);
+	public boolean isNotBackwards(IMyCoordinate other);
 	
 	/**
 	 * determines if this coordinate is located in the palace
@@ -60,5 +61,12 @@ public interface IMyCoordinate extends XiangqiCoordinate {
 	 * @return integer value representing the number of grid intersections in range (here, other]
 	 */
 	public int diagonalDistanceTo(IMyCoordinate other);
+
+	/**
+	 * returns whether or not this coordinate is "across the river" from the given aspect
+	 * @param aspect : the color from which to check if this is across the river
+	 * @return true if the coordinate is across the river, false otherwise
+	 */
+	boolean isAcrossRiver(XiangqiColor aspect);
 
 }

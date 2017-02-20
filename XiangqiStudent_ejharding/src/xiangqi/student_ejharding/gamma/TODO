@@ -1,26 +1,24 @@
 Tests:
-Elephant Movement (red & black)
-- diagonal (four directions)
-- capture
-General Movement
--tests as in beta
-Adviser Movement
--tests as in beta
-Soldier Movement
--tests as in beta
-Chariot Movement
--tests as in beta
-Palace Restrictions
--adviser moves outside palace -> ILLEGAL
--general moves outside palace -> ILLEGAL
--adviser moves diagonally inside palace one tile -> OK
--general moves orthogonally inside palace one tile -> OK
-River Restrictions
--elephant moves across river -> ILLEGAL
--elephant moves to edge of river -> OK
--general crosses river with flying general -> OK
+[DONE] Elephant Movement (red & black)
+[DONE] diagonal (four directions)
+[DONE] General Movement
+[DONE] tests as in beta
+[DONE] Adviser Movement
+[DONE] tests as in beta
+[DONE] Soldier Movement
+[DONE] crosses river, can move sideways
+[DONE] cannot go backwards
+[DONE] cannot go sideways before river
+[DONE] Chariot Movement
+[DONE] Palace Restrictions
+[DONE] adviser moves outside palace -> ILLEGAL
+[DONE] general moves outside palace -> ILLEGAL
+[DONE] adviser moves diagonally inside palace one tile -> OK
+[DONE] general moves orthogonally inside palace one tile -> OK
+[DONE] River Restrictions
+[DONE] elephant moves across river -> ILLEGAL
+[DONE] elephant moves to edge of river -> OK
+[NOT NEEDED] general crosses river with flying general -> OK
 Checkmate conditions
 - if BLACK is in checkmate at the end of the move -> REDWINS
 - if RED is in checkmate at the end of the move -> BLACKWINS
-
-for all tests, validate that the correct move message is recorded/displayed with getMoveMessage()

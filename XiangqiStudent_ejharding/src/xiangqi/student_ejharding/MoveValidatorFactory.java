@@ -8,21 +8,20 @@ import xiangqi.common.XiangqiPieceType;
 
 public class MoveValidatorFactory {
 
-	private static BiPredicate<IMyCoordinate, IMyCoordinate> horizontalValidator = 
+	static BiPredicate<IMyCoordinate, IMyCoordinate> horizontalValidator = 
 			(IMyCoordinate c1, IMyCoordinate c2) -> c1.isHorizontal(c2);
-	private static BiPredicate<IMyCoordinate, IMyCoordinate> verticalValidator = 
+	static BiPredicate<IMyCoordinate, IMyCoordinate> verticalValidator = 
 			(IMyCoordinate c1, IMyCoordinate c2) -> c1.isVertical(c2);
 	private static BiPredicate<IMyCoordinate, IMyCoordinate> soldierForwardValidator =
-			(IMyCoordinate c1, IMyCoordinate c2) -> c1.isForwardto(c2);
+			(IMyCoordinate c1, IMyCoordinate c2) -> c1.isNotBackwards(c2);
 	private static BiPredicate<IMyCoordinate, IMyCoordinate> diagonalValidator = 
 			(IMyCoordinate c1, IMyCoordinate c2) -> c1.isDiagonal(c2);
-	private static BiPredicate<IMyCoordinate, IMyCoordinate> orthogonalValidator = 
+	static BiPredicate<IMyCoordinate, IMyCoordinate> orthogonalValidator = 
 			(IMyCoordinate c1, IMyCoordinate c2) -> c1.isHorizontal(c2) || c1.isVertical(c2);
 	private static BiPredicate<IMyCoordinate, IMyCoordinate> clearStraightPathValidator = 
 			(IMyCoordinate c1, IMyCoordinate c2) -> c1.clearStraightPathTo(c2);
 	private static BiPredicate<IMyCoordinate, IMyCoordinate> diagonalDistanceValidator1 = 
 			((IMyCoordinate c1, IMyCoordinate c2) -> c1.diagonalDistanceTo(c2) == 1);
-//commented out for future use with elephants
 	private static BiPredicate<IMyCoordinate, IMyCoordinate> diagonalDistanceValidator2 = 
 			(IMyCoordinate c1, IMyCoordinate c2) -> c1.diagonalDistanceTo(c2) == 2;
 	private static BiPredicate<IMyCoordinate, IMyCoordinate> orthogonalDistanceValidator = 

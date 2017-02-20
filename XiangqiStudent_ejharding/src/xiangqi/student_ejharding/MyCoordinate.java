@@ -108,6 +108,9 @@ public class MyCoordinate implements IMyCoordinate {
 		} else return -1;
 	}
 
+	/**
+	 * returns true if the coordinate lies in the palace
+	 */
 	@Override
 	public boolean isInPalace() {
 		if(this.file <= Math.ceil(board.getNumFiles()/2) + 1 && 
@@ -117,13 +120,22 @@ public class MyCoordinate implements IMyCoordinate {
 		}
 		return false;
 	}
+	
+	@Override
+	public boolean isAcrossRiver(XiangqiColor aspect){
+		if(aspect == XiangqiColor.BLACK){
+			return this.rank <= board.getNumRanks()/2;
+		} else {
+			return this.rank > board.getNumRanks()/2;
+		}
+	}
 
 	@Override
-	public boolean isForwardto(IMyCoordinate other) {
+	public boolean isNotBackwards(IMyCoordinate other) {
 		if(board.getPieceAt(this).getColor() == XiangqiColor.RED){
-			return this.isBelow(other);
+			return !this.isAbove(other);
 		} else if(board.getPieceAt(this).getColor() ==XiangqiColor.BLACK){
-			return this.isAbove(other);
+			return !this.isBelow(other);
 		}
 		return false;
 	}

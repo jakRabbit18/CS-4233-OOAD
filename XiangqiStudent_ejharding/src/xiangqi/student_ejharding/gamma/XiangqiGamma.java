@@ -37,6 +37,7 @@ public class XiangqiGamma extends XiangqiGameImpl {
 			c1 = MyCoordinate.convertToRedAspect(c1, board);
 			c2 = MyCoordinate.convertToRedAspect(c2, board);
 		}
+		
 		System.out.println("Before Move "+Integer.toString(moveCount)+" :");
 		System.out.println(board.toString());
 		
@@ -48,13 +49,14 @@ public class XiangqiGamma extends XiangqiGameImpl {
 			switchPlayers();
 			return MoveResult.OK;
 		}
+		moveMessage = "Can't do that...";
 		return MoveResult.ILLEGAL;
 	}
 
 	@Override
 	public String getMoveMessage() {
 		// TODO Auto-generated method stub
-		return null;
+		return this.moveMessage;
 	}
 
 	@Override
@@ -84,7 +86,7 @@ public class XiangqiGamma extends XiangqiGameImpl {
 		board.placePieceAt(makeBlackGeneral(), new MyCoordinate(10,5,board));
 		board.placePieceAt(makeBlackAdvisor(), new MyCoordinate(10,6,board));
 		board.placePieceAt(makeBlackElephant(), new MyCoordinate(10,7,board));
-		board.placePieceAt(makeBlackAdvisor(), new MyCoordinate(10,9,board));
+		board.placePieceAt(makeBlackChariot(), new MyCoordinate(10,9,board));
 		
 		board.placePieceAt(makeBlackSoldier(), new MyCoordinate(7,1,board));
 		board.placePieceAt(makeBlackSoldier(), new MyCoordinate(7,3,board));
