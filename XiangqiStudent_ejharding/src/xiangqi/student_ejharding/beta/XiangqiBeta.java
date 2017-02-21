@@ -25,8 +25,8 @@ public class XiangqiBeta extends XiangqiGameImpl {
 		numRanks = numFiles = 5;		
 		board = new Board(numRanks, numFiles);
 		currentPlayer = XiangqiColor.RED;
-		moveCount = 0;
-		maxMoves = 10;
+		turnCount = 0;
+		maxTurns = 10;
 		moveStack = new Stack<Move>();
 		placeAllPieces();
 	}
@@ -39,13 +39,13 @@ public class XiangqiBeta extends XiangqiGameImpl {
 			source = MyCoordinate.convertToRedAspect(MyCoordinate.copyCoordinate(source, board),board);
 			destination = MyCoordinate.convertToRedAspect(MyCoordinate.copyCoordinate(destination, board), board);
 		}
-		System.out.println("Before Move "+Integer.toString(moveCount)+" :");
+		System.out.println("Before Move "+Integer.toString(turnCount)+" :");
 		System.out.println(board.toString());
 		Move move = new Move(source, destination, board, currentPlayer);
 		
 		if(move.isValid()){
 			MoveResult result = move.doMove();
-			System.out.println("After Move " + Integer.toString(moveCount) +" :");
+			System.out.println("After Move " + Integer.toString(turnCount) +" :");
 			System.out.println(board.toString());
 			
 			if(checkToStart && board.generalInCheck(currentPlayer)){
@@ -53,8 +53,8 @@ public class XiangqiBeta extends XiangqiGameImpl {
 				moveMessage = "That's Illegal.";
 				return MoveResult.ILLEGAL;
 			} else {
-				moveCount ++;
-				if(moveCount > 2* maxMoves){
+				turnCount ++;
+				if(turnCount > 2* maxTurns){
 					moveMessage = move.getMessage();
 					result = MoveResult.DRAW;
 				}

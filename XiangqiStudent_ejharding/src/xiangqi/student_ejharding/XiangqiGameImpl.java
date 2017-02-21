@@ -14,8 +14,8 @@ public abstract class XiangqiGameImpl implements XiangqiGame {
 	protected XiangqiColor currentPlayer;
 	protected Stack<Move> moveStack;
 	protected String moveMessage;
-	protected int moveCount;
-	protected int maxMoves;
+	protected int turnCount;
+	protected int maxTurns;
 	
 	@Override
 	public MoveResult makeMove(XiangqiCoordinate source, XiangqiCoordinate destination) {

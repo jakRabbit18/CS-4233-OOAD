@@ -31,12 +31,14 @@ public class Move {
 	}
 	
 	public boolean isValid(){
+		//boolean inCheckToStart = board.generalInCheck(player);
+		
 		if(!board.isValidLocation(source) || !board.isValidLocation(destination)){
 			this.message = "That's not a location on the current board";
 			return false;
 		}
 		
-		//will return false for none-type and
+		//will return false for none-type
 		if(piece.getColor() == XiangqiColor.NONE){
 			this.message = "There's no piece there to move";
 			return false;

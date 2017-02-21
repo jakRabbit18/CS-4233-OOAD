@@ -34,7 +34,7 @@ public class XiangqiGameFactory
 		case BETA_XQ: return new XiangqiBeta();
 		case GAMMA_XQ: return new XiangqiGamma();
 		default : return new XiangqiAlpha();
-		}
+		} 
 		
 	}
 }

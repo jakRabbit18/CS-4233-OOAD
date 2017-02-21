@@ -92,7 +92,7 @@ public class Board {
 
 		return board[rank][file].removePiece();
 	}
-	
+
 	/**
 	 * places the given piece on the board in the specified location
 	 * @param piece :: the piece to be placed
@@ -136,7 +136,7 @@ public class Board {
 	public int getNumFiles(){
 		return numFiles;
 	}
-	
+
 	@Override
 	public String toString(){
 		String s = "";
@@ -152,7 +152,7 @@ public class Board {
 
 	/**
 	 * a method to determine if the given color's general is in check
-	 * @param player : the color of the general with which we concern ourselves
+	 * @param player : the color of the general who might be in check
 	 * @return true if the general is in check, false otherwise
 	 */
 	public boolean generalInCheck(XiangqiColor player) {
@@ -163,8 +163,8 @@ public class Board {
 		} else {
 			attackingPlayer = XiangqiColor.BLACK;
 		}
-		ArrayList<MyCoordinate> pieceLocs = getAttackingPieces(player);
-		
+		ArrayList<MyCoordinate> pieceLocs = getPiecesOf(attackingPlayer);
+
 		for(MyCoordinate loc: pieceLocs){
 			Move test = new Move(loc, generalLoc, this, attackingPlayer);
 			if(test.isValid()){
@@ -173,12 +173,42 @@ public class Board {
 		}
 		return false;
 	}
-	
-	private ArrayList<MyCoordinate> getAttackingPieces(XiangqiColor player){
+
+	public boolean isWinFor(XiangqiColor player){
+		XiangqiColor defendingPlayer;
+		final boolean checkmate = true;
+		if(player == XiangqiColor.RED){
+			defendingPlayer = XiangqiColor.BLACK;
+		} else {
+			defendingPlayer = XiangqiColor.RED;
+		}
+		MyCoordinate generalLoc = findGeneral(defendingPlayer);
+		//create all possible moves for defending pieces. If any are valid, not checkmate. if they are all invalid, then checkmate.
+		//find checkmate while under threat
+		ArrayList<MyCoordinate> defendingPieceLocations = getPiecesOf(defendingPlayer);
+		for(MyCoordinate loc: defendingPieceLocations){
+			for(int r = 0; r < numRanks; r++){
+				for(int f = 0; f < numFiles; f++){
+					MyCoordinate c = new MyCoordinate(r+1, f+1, this);
+					Move m = new Move(loc, c, this, defendingPlayer);
+					if(m.isValid()){
+						m.doMove();
+						if(!generalInCheck(defendingPlayer)){
+							m.undo();
+							return !checkmate;
+						}
+						m.undo();
+					}
+				}
+			}
+		}
+		return checkmate;
+	}
+	private ArrayList<MyCoordinate> getPiecesOf(XiangqiColor player){
 		ArrayList<MyCoordinate> pieceLocs = new ArrayList<MyCoordinate>();
 		for(int r = 0; r < getNumRanks(); r++){
 			for(int f = 0; f < getNumFiles(); f++){
-				if(board[r][f].getPiece().getColor() != XiangqiColor.NONE && board[r][f].getPiece().getColor() != player){
+				if(board[r][f].getPiece().getColor() != XiangqiColor.NONE && board[r][f].getPiece().getColor() == player){
 					pieceLocs.add(new MyCoordinate(r+1,f+1,this));
 				}
 			}
@@ -196,8 +226,8 @@ public class Board {
 		}
 		return null;
 	}
-	
-	
+
+
 	private String getPieceChar(XiangqiPiece p){
 		String chars = "";
 		switch(p.getColor()){

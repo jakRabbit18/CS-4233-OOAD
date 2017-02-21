@@ -39,7 +39,7 @@ public class MoveValidatorFactory {
 	 * @return list of lambda expressions that dictate the movement of the piece.
 	 */
 	public static List<BiPredicate<IMyCoordinate, IMyCoordinate>> getValidators(XiangqiPieceType pieceType){
-		
+		 
 		List<BiPredicate<IMyCoordinate, IMyCoordinate>> validators = new LinkedList<BiPredicate<IMyCoordinate, IMyCoordinate>>();
 		switch(pieceType){
 		case CHARIOT: 
@@ -50,6 +50,7 @@ public class MoveValidatorFactory {
 			validators.add(diagonalValidator);
 			validators.add(diagonalDistanceValidator1);
 			validators.add(clearStraightPathValidator);
+			validators.add(staysInPalaceValidator);
 			break;
 		case GENERAL:
 			validators.add(orthogonalValidator);

@@ -22,32 +22,54 @@ public class XiangqiGamma extends XiangqiGameImpl {
 		currentPlayer = XiangqiColor.RED;
 		moveStack = new Stack<Move>();
 		moveMessage = "New Game";
-		moveCount = 0;
-		maxMoves = 25;
+		turnCount = 0;
+		maxTurns = 25;
 		placeAllPieces();
 	}
-	
+
 	@Override
 	public MoveResult makeMove(XiangqiCoordinate source, XiangqiCoordinate destination) {
 		// TODO Auto-generated method stub
+		boolean checkToStart = board.generalInCheck(currentPlayer);
+
 		MyCoordinate c1 = MyCoordinate.copyCoordinate(source, board);
 		MyCoordinate c2 = MyCoordinate.copyCoordinate(destination, board);
-		
+
 		if(currentPlayer == XiangqiColor.BLACK){
 			c1 = MyCoordinate.convertToRedAspect(c1, board);
 			c2 = MyCoordinate.convertToRedAspect(c2, board);
+			System.out.println("Before Move "+Integer.toString(turnCount)+"b :");
+			System.out.println(board.toString());
+		} else {
+			System.out.println("Before Move "+Integer.toString(turnCount)+"a :");
+			System.out.println(board.toString());
 		}
-		
-		System.out.println("Before Move "+Integer.toString(moveCount)+" :");
-		System.out.println(board.toString());
-		
 		Move move = new Move(c1,c2, board, currentPlayer);
 		if(move.isValid()){
 			move.doMove();
-			moveMessage = move.getMessage();
-			moveStack.push(move);
-			switchPlayers();
-			return MoveResult.OK;
+			if(board.isWinFor(currentPlayer)){
+				if(currentPlayer == XiangqiColor.RED){
+					return MoveResult.RED_WINS;
+				} else {
+					return MoveResult.BLACK_WINS;
+				}
+			}
+			if(checkToStart && board.generalInCheck(currentPlayer)){
+				move.undo();
+				moveMessage = "You must move out of check!";
+				return MoveResult.ILLEGAL;
+			} else {
+				moveMessage = move.getMessage();
+				moveStack.push(move);
+				if(currentPlayer == XiangqiColor.BLACK){
+					turnCount++;
+					if(turnCount >= maxTurns){
+						return MoveResult.DRAW;
+					}
+				}
+				switchPlayers();
+				return MoveResult.OK;
+			}
 		}
 		moveMessage = "Can't do that...";
 		return MoveResult.ILLEGAL;
@@ -62,9 +84,13 @@ public class XiangqiGamma extends XiangqiGameImpl {
 	@Override
 	public XiangqiPiece getPieceAt(XiangqiCoordinate where, XiangqiColor aspect) {
 		// TODO Auto-generated method stub
-		return board.getPieceAt(MyCoordinate.copyCoordinate(where, board));
+		if(aspect == XiangqiColor.RED){
+			return board.getPieceAt(MyCoordinate.copyCoordinate(where, board));
+		} else {
+			return board.getPieceAt(MyCoordinate.convertToRedAspect(MyCoordinate.copyCoordinate(where,board), board));
+		}
 	}
-	
+
 	private void placeAllPieces(){		
 		board.placePieceAt(makeRedChariot(), new MyCoordinate(1,1,board));
 		board.placePieceAt(makeRedElephant(), new MyCoordinate(1,3, board));
@@ -73,7 +99,7 @@ public class XiangqiGamma extends XiangqiGameImpl {
 		board.placePieceAt(makeRedAdvisor(), new MyCoordinate(1,6,board));
 		board.placePieceAt(makeRedElephant(), new MyCoordinate(1,7,board));
 		board.placePieceAt(makeRedChariot(), new MyCoordinate(1,9,board));
-		
+
 		board.placePieceAt(makeRedSoldier(), new MyCoordinate(4,1,board));
 		board.placePieceAt(makeRedSoldier(), new MyCoordinate(4,3,board));
 		board.placePieceAt(makeRedSoldier(), new MyCoordinate(4,5,board));
@@ -87,7 +113,7 @@ public class XiangqiGamma extends XiangqiGameImpl {
 		board.placePieceAt(makeBlackAdvisor(), new MyCoordinate(10,6,board));
 		board.placePieceAt(makeBlackElephant(), new MyCoordinate(10,7,board));
 		board.placePieceAt(makeBlackChariot(), new MyCoordinate(10,9,board));
-		
+
 		board.placePieceAt(makeBlackSoldier(), new MyCoordinate(7,1,board));
 		board.placePieceAt(makeBlackSoldier(), new MyCoordinate(7,3,board));
 		board.placePieceAt(makeBlackSoldier(), new MyCoordinate(7,5,board));

@@ -66,6 +66,9 @@ public class MyCoordinate implements IMyCoordinate {
 			for(int r = this.rank + 1; r < other.getRank(); r++){
 				intermediates.add(new MyCoordinate(r, this.file, board));
 			}
+			for(int r = this.rank - 1; r > other.getRank(); r--){
+				intermediates.add(new MyCoordinate(r, this.file, board));
+			}
 		}
 
 		for(IMyCoordinate c: intermediates){
@@ -113,9 +116,9 @@ public class MyCoordinate implements IMyCoordinate {
 	 */
 	@Override
 	public boolean isInPalace() {
-		if(this.file <= Math.ceil(board.getNumFiles()/2) + 1 && 
-				this.file >= Math.ceil(board.getNumFiles()/2) - 1 && 
-				(this.rank <= Math.ceil(board.getNumRanks()/2) - 2 ||this.rank >= board.getNumRanks() - 2)){
+		if(this.file <= Math.ceil(((float)board.getNumFiles())/2) + 1 && 
+				this.file >= Math.ceil(((float)board.getNumFiles())/2) - 1 && 
+				(this.rank <= Math.ceil(((float)board.getNumRanks())/2) - 2 ||this.rank >= board.getNumRanks() - 2)){
 			return true;
 		}
 		return false;
@@ -124,7 +127,7 @@ public class MyCoordinate implements IMyCoordinate {
 	@Override
 	public boolean isAcrossRiver(XiangqiColor aspect){
 		if(aspect == XiangqiColor.BLACK){
-			return this.rank <= board.getNumRanks()/2;
+			return this.rank <= board.getNumRanks()/2; 
 		} else {
 			return this.rank > board.getNumRanks()/2;
 		}
@@ -133,7 +136,7 @@ public class MyCoordinate implements IMyCoordinate {
 	@Override
 	public boolean isNotBackwards(IMyCoordinate other) {
 		if(board.getPieceAt(this).getColor() == XiangqiColor.RED){
-			return !this.isAbove(other);
+			return !this.isAbove(other); 
 		} else if(board.getPieceAt(this).getColor() ==XiangqiColor.BLACK){
 			return !this.isBelow(other);
 		}
