@@ -49,6 +49,11 @@ public class XiangqiPieceImpl implements XiangqiPiece {
 		return type;
 	}
 	
+//	@Override
+//	public String toString(){
+//		return color.toString() + " " + type.toString();
+//	}
+	
 //	public boolean equals(Object other){
 //		if(!(other instanceof XiangqiPieceImpl)){
 //			return false;

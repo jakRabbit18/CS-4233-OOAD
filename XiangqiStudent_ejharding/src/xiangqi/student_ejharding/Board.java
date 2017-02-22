@@ -1,6 +1,7 @@
 package xiangqi.student_ejharding;
 
 import java.util.ArrayList;
+import java.util.concurrent.CompletionException;
 
 import xiangqi.common.XiangqiColor;
 import xiangqi.common.XiangqiCoordinate;
@@ -158,11 +159,13 @@ public class Board {
 	public boolean generalInCheck(XiangqiColor player) {
 		MyCoordinate generalLoc = findGeneral(player);
 		XiangqiColor attackingPlayer;
+		
 		if(player.equals(XiangqiColor.BLACK)){
 			attackingPlayer = XiangqiColor.RED;
 		} else {
 			attackingPlayer = XiangqiColor.BLACK;
 		}
+		
 		ArrayList<MyCoordinate> pieceLocs = getPiecesOf(attackingPlayer);
 
 		for(MyCoordinate loc: pieceLocs){
@@ -177,33 +180,118 @@ public class Board {
 	public boolean isWinFor(XiangqiColor player){
 		XiangqiColor defendingPlayer;
 		final boolean checkmate = true;
+		
 		if(player == XiangqiColor.RED){
 			defendingPlayer = XiangqiColor.BLACK;
 		} else {
 			defendingPlayer = XiangqiColor.RED;
 		}
+		
+		
 		MyCoordinate generalLoc = findGeneral(defendingPlayer);
 		//create all possible moves for defending pieces. If any are valid, not checkmate. if they are all invalid, then checkmate.
 		//find checkmate while under threat
 		ArrayList<MyCoordinate> defendingPieceLocations = getPiecesOf(defendingPlayer);
+		
+//		if(!generalCanMove(generalLoc, defendingPlayer)){
+//			if(pieceCanFreeGeneral(defendingPieceLocations, generalLoc)){
+//				return !checkmate;
+//			} else {
+//				return checkmate;
+//			}
+//		}
+		
+		if(!generalInCheck(defendingPlayer)){
+			return !checkmate;
+		}
+		
+		//general is able to move, may be in check
 		for(MyCoordinate loc: defendingPieceLocations){
-			for(int r = 0; r < numRanks; r++){
-				for(int f = 0; f < numFiles; f++){
-					MyCoordinate c = new MyCoordinate(r+1, f+1, this);
-					Move m = new Move(loc, c, this, defendingPlayer);
-					if(m.isValid()){
-						m.doMove();
-						if(!generalInCheck(defendingPlayer)){
-							m.undo();
-							return !checkmate;
-						}
-						m.undo();
-					}
-				}
+			if(canSaveGeneral(loc, defendingPlayer)){
+				return !checkmate;
 			}
 		}
 		return checkmate;
 	}
+	
+//	private boolean pieceCanFreeGeneral(ArrayList<MyCoordinate> pieceLocs, MyCoordinate generalLoc){
+//		XiangqiColor player = this.getPieceAt(generalLoc).getColor();
+//		for(MyCoordinate loc: pieceLocs){
+//			for(int r = 0; r < numRanks; r++){
+//				for(int f = 0; f < numFiles; f++){
+//					MyCoordinate c = new MyCoordinate(r+1, f+1, this);
+//					Move m = new Move(loc, c, this, player);
+//					if(m.isValid()){
+//						m.doMove();
+//						if(generalCanMove(generalLoc, player)){
+//							m.undo();
+//							return true;
+//						}
+//						m.undo();
+//					}
+//				}
+//			}
+//		}
+//		return false;
+//	}
+//	
+//	private boolean generalCanMove(MyCoordinate generalLoc, XiangqiColor player){
+//		ArrayList<Move> moves = new ArrayList<Move>();
+//		
+//		MyCoordinate nextLoc = new MyCoordinate(generalLoc.getRank() - 1, generalLoc.getFile(), this);
+//		moves.add(new Move(generalLoc, nextLoc, this, player));
+//		
+//		nextLoc = new MyCoordinate(generalLoc.getRank() + 1, generalLoc.getFile(), this);
+//		moves.add(new Move(generalLoc, nextLoc, this, player));
+//		
+//		nextLoc = new MyCoordinate(generalLoc.getRank(), generalLoc.getFile()-1, this);
+//		moves.add(new Move(generalLoc, nextLoc, this, player));
+//		
+//		nextLoc = new MyCoordinate(generalLoc.getRank(), generalLoc.getFile()+1, this);
+//		moves.add(new Move(generalLoc, nextLoc, this, player));
+//		
+//		for(Move m: moves){
+//			try{
+//				if(m.isValid()){
+//					m.doMove();
+//					if(!generalInCheck(player)){
+//						m.undo();
+//						return true;
+//					}
+//					m.undo();
+//				}
+//			}
+//			catch(CompletionException ce){
+//				//do nothing
+//			}
+//		}
+//		return false;
+//	}
+	
+	private boolean canSaveGeneral(MyCoordinate loc, XiangqiColor defendingPlayer){
+		for(int r = 0; r < numRanks; r++){
+			for(int f = 0; f < numFiles; f++){
+				MyCoordinate c = new MyCoordinate(r+1, f+1, this);
+				Move m = new Move(loc, c, this, defendingPlayer);
+				if(getsGeneralOutOfCheck(m, defendingPlayer)){
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+	
+	private boolean getsGeneralOutOfCheck(Move m, XiangqiColor defendingPlayer){
+		if(m.isValid()){
+			m.doMove();
+			if(!generalInCheck(defendingPlayer)){
+				m.undo();
+				return true;
+			}
+			m.undo();
+		} return false;
+	}
+	
 	private ArrayList<MyCoordinate> getPiecesOf(XiangqiColor player){
 		ArrayList<MyCoordinate> pieceLocs = new ArrayList<MyCoordinate>();
 		for(int r = 0; r < getNumRanks(); r++){

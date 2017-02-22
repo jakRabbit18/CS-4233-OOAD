@@ -2,9 +2,14 @@ package xiangqi.student_ejharding.gamma;
 
 import static xiangqi.common.XiangqiColor.*;
 import static xiangqi.common.XiangqiPieceType.*;
+
+import java.util.concurrent.CompletionException;
+
 import static org.junit.Assert.*;
 import static xiangqi.common.MoveResult.*;
 import org.junit.*;
+import org.junit.rules.ExpectedException;
+
 import xiangqi.XiangqiGameFactory;
 import xiangqi.common.*;
 import xiangqi.student_ejharding.TestCoordinate;
@@ -12,6 +17,8 @@ import xiangqi.student_ejharding.XiangqiGameImpl;
 
 public class XiangqiGammaTests {
 
+	@Rule
+	public final ExpectedException exception = ExpectedException.none();
 	TestCoordinate[][] board;
 	XiangqiGame gamma;
 	
@@ -169,9 +176,9 @@ public class XiangqiGammaTests {
 	}
 	
 	@Test
-	public void illegalMoveMessageOnInvalidCoords(){
-		assertEquals(ILLEGAL, gamma.makeMove(board[0][0], board[0][8]));
-		assertTrue(gamma.getMoveMessage().length() > 5);
+	public void CompletionExceptionOnInvalidCoords(){
+		exception.expect(CompletionException.class);
+		gamma.makeMove(board[0][0], board[0][8]);
 	}
 	
 	@Test
@@ -240,9 +247,5 @@ public class XiangqiGammaTests {
 		assertEquals(RED_WINS, gamma.makeMove(board[7][3], board[10][3])); //checkmate for red
 	}
 	
-	@Test
-	public void generalUnthreatenedCheckmate(){ 
-		
-	}
 }
 

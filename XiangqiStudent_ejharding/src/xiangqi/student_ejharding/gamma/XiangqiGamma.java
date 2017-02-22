@@ -29,8 +29,6 @@ public class XiangqiGamma extends XiangqiGameImpl {
 
 	@Override
 	public MoveResult makeMove(XiangqiCoordinate source, XiangqiCoordinate destination) {
-		// TODO Auto-generated method stub
-		boolean checkToStart = board.generalInCheck(currentPlayer);
 
 		MyCoordinate c1 = MyCoordinate.copyCoordinate(source, board);
 		MyCoordinate c2 = MyCoordinate.copyCoordinate(destination, board);
@@ -54,7 +52,7 @@ public class XiangqiGamma extends XiangqiGameImpl {
 					return MoveResult.BLACK_WINS;
 				}
 			}
-			if(checkToStart && board.generalInCheck(currentPlayer)){
+			if(board.generalInCheck(currentPlayer)){
 				move.undo();
 				moveMessage = "You must move out of check!";
 				return MoveResult.ILLEGAL;

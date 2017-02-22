@@ -1,5 +1,7 @@
 package xiangqi.student_ejharding;
 
+import java.util.concurrent.CompletionException;
+
 import xiangqi.common.MoveResult;
 import xiangqi.common.XiangqiColor;
 import xiangqi.common.XiangqiCoordinate;
@@ -35,7 +37,7 @@ public class Move {
 		
 		if(!board.isValidLocation(source) || !board.isValidLocation(destination)){
 			this.message = "That's not a location on the current board";
-			return false;
+			throw new CompletionException(new RuntimeException());
 		}
 		
 		//will return false for none-type
@@ -88,9 +90,14 @@ public class Move {
 			this.message = "After Move:\n" + board.toString();
 			return MoveResult.OK;
 		}
-		board.placePieceAt(destPiece, destination);
-		board.placePieceAt(piece, source);
-		this.message = "YOU CAN'T DO THAT!!!!";
+//		board.placePieceAt(destPiece, destination);
+//		board.placePieceAt(piece, source);
+//		this.message = "YOU CAN'T DO THAT!!!!";
 		return MoveResult.ILLEGAL; 
 	}
+	
+//	@Override
+//	public String toString(){
+//		return "Move " + piece.toString() + " from " + source.toString() + " to " + destination.toString();
+//	}
 }

@@ -142,6 +142,11 @@ public class MyCoordinate implements IMyCoordinate {
 		}
 		return false;
 	}
+	
+	@Override
+	public String toString(){
+		return "Rank: " + this.rank + " File: " + this.file;
+	}
 
 	private boolean isAbove(IMyCoordinate other) {
 		return this.rank > other.getRank();

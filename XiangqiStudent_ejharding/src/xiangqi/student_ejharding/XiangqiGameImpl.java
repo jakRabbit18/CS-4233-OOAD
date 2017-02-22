@@ -18,22 +18,10 @@ public abstract class XiangqiGameImpl implements XiangqiGame {
 	protected int maxTurns;
 	
 	@Override
-	public MoveResult makeMove(XiangqiCoordinate source, XiangqiCoordinate destination) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
 	public String getMoveMessage() {
 		return moveMessage;
 	}
 
-	@Override
-	public XiangqiPiece getPieceAt(XiangqiCoordinate where, XiangqiColor aspect) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-	
 	protected void switchPlayers(){
 		if(currentPlayer.equals(XiangqiColor.RED)){
 			currentPlayer = XiangqiColor.BLACK;
